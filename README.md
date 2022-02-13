@@ -1,3 +1,44 @@
+# Typescript React ESLint Starter with Create React App
+
+```shell
+yarn create react-app typescript-react-eslint-starter --template typescript
+cd typescript-react-eslint-starter
+yarn add eslint --dev
+yarn create @eslint/config
+```
+
+For ESLint config select:
+
+- How would you like to use ESLint?
+    - To check syntax, find problems, and enforce code style
+- What type of modules does your project use?
+    - JavaScript modules (import/export)
+- Which framework does your project use?
+    - React
+- Does your project use TypeScript?
+    - Yes
+- Where does your code run?
+    - Browser
+- How would you like to define a style for your project?
+    - Use a popular style guide
+- Which style guide do you want to follow?
+    - Airbnb: https://github.com/airbnb/javascript
+- What format do you want your config file to be in?
+    - JSON
+
+```shell
+npx eslint src/*
+npx eslint src/* --fix
+npx eslint src/* --quiet  # ignore warnings
+yarn add eslint-import-resolver-typescript --dev
+```
+
+## ESLint Config
+
+Helpful article: [Setting ESLint on a React Typescript project](https://andrebnassis.medium.com/setting-eslint-on-a-react-typescript-project-2021-1190a43ffba)
+
+The article is slightly outdated. I didn't have to fix all the errors listed in the article. The Typescript template for Create React App or the ESLint defaults 
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
