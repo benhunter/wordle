@@ -1,4 +1,4 @@
-# Typescript React ESLint Starter with Create React App
+# Typescript React ESLint Cypress Starter with Create React App
 
 ```shell
 yarn create react-app typescript-react-eslint-starter --template typescript
@@ -31,6 +31,8 @@ npx eslint src/*
 npx eslint src/* --fix
 npx eslint src/* --quiet  # ignore warnings
 yarn add eslint-import-resolver-typescript --dev
+yarn add cypress --dev
+yarn journey
 ```
 
 ## ESLint Config
