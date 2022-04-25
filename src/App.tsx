@@ -1,80 +1,87 @@
 import React, { useState } from 'react';
 import './App.css';
+import Keyboard from './Keyboard';
+import Word from './Word';
 
-type WordProps = {
-  guess: string;
-}
-
-function Word({ guess }: WordProps) {
-  return (
-    <div className="word">
-      {guess.padEnd(5, ' ').split('').map((letter) => (<div className="letter">{letter}</div>))}
-    </div>
-  );
-}
-
-type keyboardProps = {
-  handleKeyPress: (key: string)=>void;
-}
-
-function Keyboard({ handleKeyPress }: keyboardProps) {
-  const keyboardRows = ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'];
-
-  const buildKeyboardRow = (row: string) => (
-    <div className="keyboard-row">
-      {row.split('').map((key) => (
-        <button
-          type="button"
-          className="keyboard-key"
-          onClick={() => handleKeyPress(key)}
-        >
-          {key}
-        </button>
-      ))}
-    </div>
-  );
-
-  return (
-    <div className="keyboard">
-      {keyboardRows.map((row) => buildKeyboardRow(row))}
-    </div>
-  );
+type Guess = {
+  letters: string;
+  id: number;
 }
 
 type GuessState = {
-  guesses: Array<string>;
-  currentWord: number;
+  guesses: Array<Guess>;
+  currentGuessIndex: number;
+  gameSolved: boolean;
 }
-const initialGuessState: GuessState = { guesses: ['', '', '', '', ''], currentWord: 0 };
+
+const buildInitialGuesses = (): Guess[] => {
+  let initialArray: Guess[] = new Array(5).fill({});
+  initialArray = initialArray.map(
+    (value, index) => ({
+      letters: '',
+      id: index,
+    }),
+  );
+  return initialArray;
+};
+
+const initialGuessState: GuessState = {
+  guesses: buildInitialGuesses(),
+  currentGuessIndex: 0,
+  gameSolved: false,
+};
+
 // const initialGuesses: Array<string> = ['ADIEU', 'STORY', 'STARE', 'CLEAR', 'TEARS'];
 
 function App() {
   const [guessState, setGuessState] = useState({ ...initialGuessState });
 
-  const handleKeyPress = (key: string) => {
-    console.log(key);
+  const handleLetterKeyPress = (key: string) => {
+    const { guesses } = guessState;
+    let { gameSolved } = guessState;
 
-    const newGuesses = guessState.guesses;
-    if (guessState.currentWord < 5) {
-      newGuesses[guessState.currentWord] += key;
+    if (gameSolved) return;
+
+    if (guessState.currentGuessIndex < 5) {
+      guesses[guessState.currentGuessIndex].letters += key;
+
+      if (guesses[guessState.currentGuessIndex].letters.match('ALERT')) {
+        gameSolved = true;
+      }
     } else {
       return;
     }
-    const newCurrentWord = newGuesses[guessState.currentWord].length < 5
-      ? guessState.currentWord
-      : guessState.currentWord + 1;
+
+    const currentGuessIndex = guesses[guessState.currentGuessIndex].letters.length < 5
+      ? guessState.currentGuessIndex
+      : guessState.currentGuessIndex + 1;
 
     setGuessState({
-      guesses: newGuesses,
-      currentWord: newCurrentWord,
+      guesses,
+      currentGuessIndex,
+      gameSolved,
     });
+  };
+
+  const handleEnterKeyPress = () => {
+    console.log('Enter');
+  };
+
+  const handleBackKeyPress = () => {
+    console.log('Back');
   };
 
   return (
     <div className="App">
       <h1>WORDLE</h1>
-      {guessState.guesses.map((guess) => <Word guess={guess} />)}
-      <Keyboard handleKeyPress={handleKeyPress} />
+      {guessState.guesses.map((guess, index) => (
+        <Word guess={guess.letters} key={guess.id} />
+      ))}
+      <Keyboard
+        handleLetterKeyPress={handleLetterKeyPress}
+        handleEnterKeyPress={handleEnterKeyPress}
+        handleBackKeyPress={handleBackKeyPress}
+      />
     </div>
   );
 }

@@ -29,10 +29,18 @@
 }
 
 .keyboard-key {
-  width: 30px;
-  height: 50px;
+  width: 50px;
+  height: 60px;
   background-color: grey;
   color: white;
-  margin: 2px;
-  font-size: large;
+  margin: 3px;
+  font-size: medium;
+}
+
+#key-enter {
+ width: 70px
+}
+
+#key-back {
+  width: 70px;
 }
