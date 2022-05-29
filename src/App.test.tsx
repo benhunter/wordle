@@ -1,22 +1,19 @@
 import React from 'react';
 import {
-  fireEvent, getByText,
-  render, RenderResult, screen, waitFor,
+  fireEvent, render, RenderResult, screen,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { wait } from '@testing-library/user-event/dist/utils';
 import App from './App';
 
 let app: RenderResult<typeof import('@testing-library/dom/types/queries'), HTMLElement, HTMLElement>;
 
 beforeEach(() => {
-  app = render(<App />);
+  app = render(<App DEBUG={false} />);
 });
 
 test('renders title', () => {
   const titleText = screen.getByText(/wordle/i);
-  expect(titleText)
-    .toBeInTheDocument();
+  expect(titleText).toBeInTheDocument();
 });
 
 test('renders five empty guesses', () => {
@@ -56,4 +53,36 @@ test('When I try to Enter an invalid word, the row shakes', async () => {
   fireEvent.animationEnd(screen.getAllByText(/q/i)[0]);
 
   expect(screen.getAllByText(/q/i)[0]).not.toHaveClass('shake');
+});
+
+const click = (name: string) => {
+  userEvent.click(screen.getByRole('button', { name }));
+};
+
+test('When I Enter a word in the dictionary the correct letters and positions are colored', () => {
+  click('A');
+  click('W');
+  click('A');
+  click('R');
+  click('E');
+  click('ENTER');
+  expect(screen.getAllByText('A')[0]).toHaveClass('green');
+  expect(screen.getAllByText('W')[0]).not.toHaveClass('green');
+  expect(screen.getAllByText('W')[0]).not.toHaveClass('yellow');
+  expect(screen.getAllByText('A')[1]).not.toHaveClass('yellow');
+  expect(screen.getAllByText('A')[1]).not.toHaveClass('green');
+  expect(screen.getAllByText('R')[0]).toHaveClass('green');
+  expect(screen.getAllByText('E')[0]).toHaveClass('yellow');
+});
+
+test.skip('When a guess has double letters, but solution does not, the only one of the letter will be marked. mark the correct guess first, leave the double letter grey', () => {
+  expect(false);
+});
+
+test.skip('Backspace should not work after game solve', () => {
+  expect(false);
+});
+
+test.skip('Pressing Enter shakes if not enough letters', () => {
+  expect(false);
 });

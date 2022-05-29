@@ -1,4 +1,5 @@
 import React from 'react';
+import getSolutionWord from './GetSolutionWord';
 
 type WordProps = {
   guess: string;
@@ -19,9 +20,9 @@ export default function Word({
         .split('')
         .map((letter, index) => (
           <div
-            className={`letter ${showColors && letter === 'ALERT'[index] ? 'green ' : ''}${doShake ? 'shake' : ''}`}
+            className={`letter ${showColors && letter === getSolutionWord()[index] ? 'green ' : ''}${doShake ? 'shake' : ''}`}
             key={letter + index.toString()}
-            data-testid={`${showColors && letter === 'ALERT'[index] ? 'green' : ''}`}
+            data-testid={`${showColors && letter === (getSolutionWord())[index] ? 'green' : ''}`}
             onAnimationEnd={() => endShakeCallback()}
           >
             {letter}
