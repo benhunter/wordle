@@ -1,4 +1,4 @@
-function getSolutionWord() {
+function getSolutionWord(): string {
   return 'ALERT';
 }
 

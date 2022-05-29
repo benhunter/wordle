@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import './App.css';
 import Keyboard from './Keyboard';
 import Word from './Word';
-import getSolutionWord from './GetSolutionWord';
+import getSolutionWord from './getSolutionWord';
+import isWordInDictionary from './dictionary';
 
 type AppProps = {
   DEBUG: boolean
@@ -80,7 +81,7 @@ function App({ DEBUG = false }: AppProps) {
     }
 
     function isGuessInDictionary() {
-      return true;
+      return isWordInDictionary(guessState.guesses[guessState.currentGuessIndex].letters);
     }
 
     function isSolved() {
@@ -89,15 +90,14 @@ function App({ DEBUG = false }: AppProps) {
 
     if (isGuessFiveLetters()) {
       if (isGuessInDictionary()) {
-        // yes - check for solution or go to next guess
         if (isSolved()) {
-          // end game
+          const gameSolved = true;
           const { guesses } = guessState;
           guesses[guessState.currentGuessIndex].entered = true;
           setGuessState({
             ...guessState,
             guesses,
-            gameSolved: true,
+            gameSolved,
           });
         } else {
           const { guesses } = guessState;
@@ -118,6 +118,8 @@ function App({ DEBUG = false }: AppProps) {
   };
 
   const handleBackKeyPress = () => {
+    if (guessState.gameSolved) return;
+
     if (guessState.guesses[guessState.currentGuessIndex].letters.length > 0) {
       const { guesses } = guessState;
       const currentGuess: Guess = guesses[guessState.currentGuessIndex];
