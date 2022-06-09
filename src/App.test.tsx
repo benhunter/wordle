@@ -6,7 +6,6 @@ import userEvent from '@testing-library/user-event';
 import App from './App';
 import getSolutionWord from './getSolutionWord';
 
-let app: RenderResult<typeof import('@testing-library/dom/types/queries'), HTMLElement, HTMLElement>;
 jest.mock('./getSolutionWord');
 
 const mockGetSolutionWord = getSolutionWord as jest.MockedFunction<typeof getSolutionWord>;
@@ -17,7 +16,7 @@ const clickButton = (name: string) => {
 
 beforeEach(() => {
   mockGetSolutionWord.mockReturnValue('ALERT');
-  app = render(<App DEBUG={false} />);
+  const app = render(<App DEBUG={false} />);
 });
 
 test('renders title', () => {
