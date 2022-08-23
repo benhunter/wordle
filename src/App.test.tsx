@@ -24,9 +24,8 @@ test('renders title', () => {
   expect(titleText).toBeInTheDocument();
 });
 
-test.skip('renders five empty guesses', () => {
-  expect(screen.getAllByText('A')).toBeInTheDocument();
-  expect(false).toBeTruthy();
+test('renders five empty guesses', () => {
+  screen.getAllByTestId('guess-letter').map((box)=>{expect(box).toHaveTextContent('') })
 });
 
 test('When I guess the correct word the letters are all green and the game ends', () => {
