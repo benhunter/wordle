@@ -47,7 +47,7 @@ export default function Word({
           <div
             className={`letter ${(getLetterColor(letter, index))}${doShake ? 'shake' : ''}`}
             key={letter + index.toString()}
-            data-testid='guess-letter'
+            data-testid="guess-letter"
             onAnimationEnd={() => endShakeCallback()}
           >
             {letter}

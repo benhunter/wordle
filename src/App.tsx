@@ -62,10 +62,6 @@ function App({ DEBUG = false }: AppProps) {
       return;
     }
 
-    // const currentGuessIndex = guesses[guessState.currentGuessIndex].letters.length < 5
-    //   ? guessState.currentGuessIndex
-    //   : guessState.currentGuessIndex + 1;
-
     setGuessState({
       guesses,
       currentGuessIndex,
@@ -114,6 +110,8 @@ function App({ DEBUG = false }: AppProps) {
         // no - shake and stay on current guess
         setDoShake(true);
       }
+    } else {
+      setDoShake(true);
     }
   };
 

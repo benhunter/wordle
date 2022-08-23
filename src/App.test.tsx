@@ -14,6 +14,18 @@ const clickButton = (name: string) => {
   userEvent.click(screen.getByRole('button', { name }));
 };
 
+const expectFirstRowToShake = () => {
+  screen.getAllByTestId('guess-letter').slice(0, 1).forEach((box) => {
+    expect(box).toHaveClass('shake');
+  });
+};
+
+const endFirstRowShakeAnimation = () => {
+  screen.getAllByTestId('guess-letter').slice(0, 5).forEach((guessLetter) => {
+    fireEvent.animationEnd(guessLetter);
+  });
+};
+
 beforeEach(() => {
   mockGetSolutionWord.mockReturnValue('ALERT');
   const app = render(<App DEBUG={false} />);
@@ -25,7 +37,7 @@ test('renders title', () => {
 });
 
 test('renders five empty guesses', () => {
-  screen.getAllByTestId('guess-letter').map((box)=>{expect(box).toHaveTextContent('') })
+  screen.getAllByTestId('guess-letter').forEach((box) => { expect(box).toHaveTextContent(''); });
 });
 
 test('When I guess the correct word the letters are all green and the game ends', () => {
@@ -59,7 +71,7 @@ test('When I try to Enter an invalid word, the row shakes', async () => {
   clickButton('Q');
   clickButton('Q');
   clickButton('Q');
-  userEvent.click(screen.getByRole('button', { name: /enter/i }));
+  clickButton('ENTER');
 
   expect(screen.getAllByText(/q/i)[0]).toHaveClass('shake');
 
@@ -84,7 +96,7 @@ test('When I Enter a word in the dictionary the correct letters and positions ar
   expect(screen.getAllByText('E')[0]).toHaveClass('yellow');
 });
 
-test.skip('When a guess has double letters, but solution does not, the only one of the letter will be marked. mark the correct guess first, leave the double letter grey', () => {
+test.skip('When a guess has double letters, but solution does not, the only one of the letters will be marked. mark the correct guess first, leave the double letter grey', () => {
   expect(false).toBeTruthy();
 });
 
@@ -99,8 +111,36 @@ test('Backspace should not work after game solve', () => {
   expect(screen.getAllByText('T')).toHaveLength(2);
 });
 
-test.skip('Pressing Enter shakes if not enough letters', () => {
-  expect(false).toBeTruthy();
+test('Pressing Enter shakes if not enough letters', () => {
+  clickButton('ENTER');
+  expectFirstRowToShake();
+  endFirstRowShakeAnimation();
+
+  clickButton('A');
+  clickButton('ENTER');
+  expectFirstRowToShake();
+  endFirstRowShakeAnimation();
+
+  clickButton('A');
+  clickButton('A');
+  clickButton('ENTER');
+  expectFirstRowToShake();
+  endFirstRowShakeAnimation();
+
+  clickButton('A');
+  clickButton('A');
+  clickButton('A');
+  clickButton('ENTER');
+  expectFirstRowToShake();
+  endFirstRowShakeAnimation();
+
+  clickButton('A');
+  clickButton('A');
+  clickButton('A');
+  clickButton('A');
+  clickButton('ENTER');
+  expectFirstRowToShake();
+  endFirstRowShakeAnimation();
 });
 
 test.skip('Pressing more than five letters shakes', () => {
