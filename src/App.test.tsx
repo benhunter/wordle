@@ -146,3 +146,7 @@ test('Pressing Enter shakes if not enough letters', () => {
 test.skip('Pressing more than five letters shakes', () => {
   expect(false).toBeTruthy();
 });
+
+test.skip('Update keyboard color based on guesses', () => {
+  expect(false).toBeTruthy();
+});
